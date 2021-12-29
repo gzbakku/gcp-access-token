@@ -1,10 +1,10 @@
 
-use tokio::io::{AsyncRead,AsyncWrite};
+use tokio::io::{AsyncReadExt};
 use tokio::fs::File;
 use json::parse as JsonParse;
 use json::JsonValue;
 
-async fn read_string(path:String)->Result<JsonValue,&'static str>{
+pub async fn read_json(path:String)->Result<JsonValue,&'static str>{
 
     let body:String;
     match read_string(path).await{
@@ -12,7 +12,7 @@ async fn read_string(path:String)->Result<JsonValue,&'static str>{
         Err(e)=>{return Err(e);}
     }
 
-    match JsonParse(body).await{
+    match JsonParse(&body){
         Ok(v)=>{return Ok(v);},
         Err(_)=>{return Err("failed-parse_to_json");}
     }
@@ -27,7 +27,7 @@ async fn read_string(path:String)->Result<String,&'static str>{
         Err(e)=>{return Err(e);}
     }
 
-    match String::from_utf8(body).await{
+    match String::from_utf8(body){
         Ok(v)=>{return Ok(v);},
         Err(_)=>{return Err("failed-parse_to_string");}
     }
@@ -36,8 +36,7 @@ async fn read_string(path:String)->Result<String,&'static str>{
 
 async fn read_raw(path:String)->Result<Vec<u8>,&'static str>{
 
-    
-    let file:File;
+    let mut file:File;
     match File::open(&path).await{
         Ok(v)=>{file = v;},
         Err(_)=>{
@@ -47,7 +46,7 @@ async fn read_raw(path:String)->Result<Vec<u8>,&'static str>{
 
     let mut buffer = Vec::new();
     match file.read_to_end(&mut buffer).await{
-        Ok(v)=>{},
+        Ok(_)=>{},
         Err(_)=>{
             return Err("failed-read_file");
         }

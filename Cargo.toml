@@ -1,12 +1,22 @@
 [package]
-name = "gcp-access-token"
+name = "gcp_access_token"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "this is a pure rust implimentation to get google cloud access token for servers with service account credentials."
+homepage = "https://github.com/gzbakku/gcp-access-token"
+repository = "https://github.com/gzbakku/gcp-access-token"
+readme = "README.md"
+keywords = ["gcp","access","token","server","api"]
+categories = ["api-bindings","asynchronous"]
+license = "GPL-3.0"
 
 [dependencies]
 openssl = "0.10.30"
-reqwest = "0.11.8"
+reqwest = {version="0.11.8",features = ["multipart","json"]}
 json = "0.12.4"
 tokio = { version = "1.15.0", features = ["full"] }
+base64 = "0.13.0"
+data-encoding = {version="2.3.2"}
+urlencoding = "2.1.0"
