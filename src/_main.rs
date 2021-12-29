@@ -6,7 +6,10 @@ pub mod generator;
 #[tokio::main]
 async fn main() {
 
-    match generator::init("../secret/daachi_firestore_key.json".to_string()).await{
+    match generator::init(
+        "../secret/firestore.json".to_string(),
+        "https://www.googleapis.com/auth/firestore".to_string()
+    ).await{
         Ok(v)=>{
             println!("token successfull : {}",v);
         },

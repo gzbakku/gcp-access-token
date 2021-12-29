@@ -9,7 +9,7 @@ use openssl::hash::MessageDigest;
 // use data_encoding::BASE64URL as BASE64ENCODER;
 use data_encoding::BASE64URL_NOPAD as BASE64ENCODER;
 
-pub async fn init(file_path:String)->Result<String,&'static str>{
+pub async fn init(file_path:String,scope:String)->Result<String,&'static str>{
 
     //--------------------------------------
     //process creds
@@ -86,7 +86,8 @@ pub async fn init(file_path:String)->Result<String,&'static str>{
     let build_token = object!{
         "iss":JsonValue::String(email),
         // "scope":JsonValue::String(String::from("https://www.googleapis.com/auth/firestore")),
-        "scope":JsonValue::String(String::from("https://www.googleapis.com/auth/devstorage.read_only")),
+        // "scope":JsonValue::String(String::from("https://www.googleapis.com/auth/devstorage.read_only")),
+        "scope":JsonValue::String(scope),
         "aud":JsonValue::String(String::from("https://oauth2.googleapis.com/token")),
         "exp":JsonValue::Number(expire_at_num),
         "iat":JsonValue::Number(current_time_num),

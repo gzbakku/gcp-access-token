@@ -3,11 +3,12 @@ use crate::token;
 use reqwest::{Response,Request};
 use urlencoding::encode as UrlEncodingEncode;
 use json::parse as JsonParse;
+use json::JsonValue;
 
-pub async fn init(file_path:String)->Result<String,&'static str>{
+pub async fn init(file_path:String,scope:String)->Result<JsonValue,&'static str>{
 
     let jwt:String;
-    match token::init(file_path).await{
+    match token::init(file_path,scope).await{
         Ok(v)=>{jwt = v;},
         Err(_e)=>{return Err(_e);}
     }
@@ -32,8 +33,6 @@ pub async fn init(file_path:String)->Result<String,&'static str>{
         Err(_)=>{return Err("failed-build_request");}
     }
 
-    // println!("{:?}",request);
-
     let response:Response;
     match Client::new().execute(request).await{
         Ok(v)=>{response = v;},
@@ -47,19 +46,23 @@ pub async fn init(file_path:String)->Result<String,&'static str>{
         Err(_)=>{return Err("failed-get-response-string");}
     }
 
+    // println!("code : {}",response_code);
+    // println!("body : {}",response_string);
+
     if response_code != 200{
         return Err("request-failed");
     }
 
     match JsonParse(&response_string){
         Ok(token)=>{
-            if !token.has_key("access_token"){return Err("invalid-response_json");}
-            match token["access_token"].as_str(){
-                Some(v)=>{
-                    return Ok(v.to_string());
-                },
-                None=>{return Err("not_found-access_token-response_json");}
-            }
+            return Ok(token);
+            // if !token.has_key("access_token"){return Err("invalid-response_json");}
+            // match token["access_token"].as_str(){
+            //     Some(v)=>{
+            //         return Ok(v.to_string());
+            //     },
+            //     None=>{return Err("not_found-access_token-response_json");}
+            // }
         },
         Err(_)=>{
             return Err("failed-parse_response_json");
