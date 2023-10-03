@@ -4,11 +4,28 @@ use reqwest::{Response,Request};
 use urlencoding::encode as UrlEncodingEncode;
 use json::parse as JsonParse;
 use json::JsonValue;
+use crate::io::read_json;
 
 pub async fn init(file_path:String,scope:String)->Result<JsonValue,&'static str>{
+    let creds:JsonValue;
+    match read_json(file_path).await{
+        Ok(v)=>{creds = v;},
+        Err(_e)=>{
+            println!("!!! failed-read_credss => {:?}",_e);
+            return Err("faile-read_creds");
+        }
+    }
+    getter(creds,scope).await
+}
+
+pub async fn init_json(creds:JsonValue,scope:String)->Result<JsonValue,&'static str>{
+    getter(creds,scope).await
+}
+
+pub async fn getter(creds:JsonValue,scope:String)->Result<JsonValue,&'static str>{
 
     let jwt:String;
-    match token::init(file_path,scope).await{
+    match token::init(creds,scope).await{
         Ok(v)=>{jwt = v;},
         Err(_e)=>{return Err(_e);}
     }

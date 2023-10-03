@@ -1,5 +1,4 @@
 use json::{JsonValue,object,stringify};
-use crate::io::read_json;
 use std::time::{SystemTime, UNIX_EPOCH};
 use json::number::Number;
 use openssl::pkey::{PKey,Private};
@@ -9,20 +8,24 @@ use openssl::hash::MessageDigest;
 // use data_encoding::BASE64URL as BASE64ENCODER;
 use data_encoding::BASE64URL_NOPAD as BASE64ENCODER;
 
-pub async fn init(file_path:String,scope:String)->Result<String,&'static str>{
+pub async fn init(
+    // file_path:String,
+    creds:JsonValue,
+    scope:String
+)->Result<String,&'static str>{
 
     //--------------------------------------
     //process creds
     //--------------------------------------
 
-    let creds:JsonValue;
-    match read_json(file_path).await{
-        Ok(v)=>{creds = v;},
-        Err(_e)=>{
-            println!("!!! failed-read_credss => {:?}",_e);
-            return Err("faile-read_creds");
-        }
-    }
+    // let creds:JsonValue;
+    // match read_json(file_path).await{
+    //     Ok(v)=>{creds = v;},
+    //     Err(_e)=>{
+    //         println!("!!! failed-read_credss => {:?}",_e);
+    //         return Err("faile-read_creds");
+    //     }
+    // }
 
     let private_key_string:String;
     if !creds.has_key(&"private_key"){return Err("not_found-creds-private_key");}
