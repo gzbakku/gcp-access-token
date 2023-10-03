@@ -10,7 +10,7 @@ use data_encoding::BASE64URL_NOPAD as BASE64ENCODER;
 
 pub async fn init(
     // file_path:String,
-    creds:JsonValue,
+    creds:&JsonValue,
     scope:String
 )->Result<String,&'static str>{
 

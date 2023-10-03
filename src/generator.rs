@@ -15,14 +15,14 @@ pub async fn init(file_path:String,scope:String)->Result<JsonValue,&'static str>
             return Err("faile-read_creds");
         }
     }
+    getter(&creds,scope).await
+}
+
+pub async fn init_json(creds:&JsonValue,scope:String)->Result<JsonValue,&'static str>{
     getter(creds,scope).await
 }
 
-pub async fn init_json(creds:JsonValue,scope:String)->Result<JsonValue,&'static str>{
-    getter(creds,scope).await
-}
-
-pub async fn getter(creds:JsonValue,scope:String)->Result<JsonValue,&'static str>{
+pub async fn getter(creds:&JsonValue,scope:String)->Result<JsonValue,&'static str>{
 
     let jwt:String;
     match token::init(creds,scope).await{
