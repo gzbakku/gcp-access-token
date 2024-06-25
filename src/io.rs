@@ -1,5 +1,5 @@
 
-use tokio::io::{AsyncReadExt};
+use tokio::io::AsyncReadExt;
 use tokio::fs::File;
 use json::parse as JsonParse;
 use json::JsonValue;

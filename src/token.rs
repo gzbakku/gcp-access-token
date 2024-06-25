@@ -2,7 +2,7 @@ use json::{JsonValue,object,stringify};
 use std::time::{SystemTime, UNIX_EPOCH};
 use json::number::Number;
 use openssl::pkey::{PKey,Private};
-use openssl::sign::{Signer};
+use openssl::sign::Signer;
 // use base64::encode as Base64Encode;
 use openssl::hash::MessageDigest;
 // use data_encoding::BASE64URL as BASE64ENCODER;
